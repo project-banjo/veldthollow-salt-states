@@ -1,0 +1,34 @@
+limit_req_zone $binary_remote_addr zone=login:10m rate=1r/s;
+
+upstream gunicorn {
+    server 127.0.0.1:8000;
+}
+
+server {
+    listen 80 default;
+    client_max_body_size 4G;
+    server_name veldthollow.com;
+
+    location /static/ {
+        expires 1M;
+        alias {{pillar.django.static_path}};
+    }
+
+    location /admin/login/ {
+        limit_req zone=login burst=5;
+
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://gunicorn;
+    }
+
+    location / {
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header Host $http_host;
+        proxy_redirect off;
+        proxy_pass http://gunicorn;
+    }
+}
+
+# vim: set filetype=nginx:
