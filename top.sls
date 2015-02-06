@@ -5,6 +5,7 @@ base:
         - nginx
         - postgresql
         - supervisor
+        - redis
         - python
         - mezzanine
         - postgresql.backups
