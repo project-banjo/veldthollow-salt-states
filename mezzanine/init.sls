@@ -49,23 +49,23 @@ collect_static:
         - watch:
             - git: mezzanine
 
-restart_gunicorn:
-    cmd.wait:
-        - name: supervisorctl restart gunicorn
-        - watch:
-            - git: mezzanine
-            - file: mezzanine
-            - file: /etc/supervisor/conf.d/mezzanine.conf
-
-/etc/supervisor/conf.d/mezzanine.conf:
+mezzanine_supervisor:
     file.managed:
+        - name: /etc/supervisor/conf.d/mezzanine.conf:
         - source: salt://mezzanine/supervisor.conf
         - mode: 644
         - require:
             - pkg: supervisor
             - pip: supervisor
-        - watch_in:
-            - cmd: restart_supervisor
+    supervisor.running:
+        - name: gunicorn
+        - update: True
+        - watch:
+            - git: mezzanine
+            - file: mezzanine
+            - file: /etc/supervisor/conf.d/mezzanine.conf
+        - require:
+            - file: mezzanine_supervisor
 
 {% for username, user in pillar.postgres.users.items() %}
 pg_user-{{username}}:
