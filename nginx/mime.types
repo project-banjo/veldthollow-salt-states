@@ -79,7 +79,8 @@ types {
 
 	application/vnd.ms-fontobject           eot;
 	application/x-font-ttf                  ttf;
-	font/opentype				ott;
+	font/opentype				otf;
 	font/x-woff				woff;
+	font/x-woff2				woff2;
 
 }
