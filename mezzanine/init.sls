@@ -51,13 +51,13 @@ collect_static:
 
 mezzanine_supervisor:
     file.managed:
-        - name: /etc/supervisor/conf.d/mezzanine.conf:
+        - name: /etc/supervisor/conf.d/mezzanine.conf
         - source: salt://mezzanine/supervisor.conf
         - mode: 644
         - require:
             - pkg: supervisor
             - pip: supervisor
-    supervisor.running:
+    supervisord.running:
         - name: gunicorn
         - update: True
         - watch:
