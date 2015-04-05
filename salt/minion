@@ -2,4 +2,5 @@ file_client: local
 file_roots:
   base:
     - /srv/salt/
+    - /srv/pillar/files/
 state_verbose: False

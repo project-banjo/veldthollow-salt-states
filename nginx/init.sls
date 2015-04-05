@@ -50,4 +50,22 @@ nginx:
         - require:
             - pkg: nginx
 
+/etc/nginx/ssl:
+    file.directory:
+        - user: www-data
+        - group: www-data
+        - mode: 700
+
+/etc/nginx/ssl/star_veldthollow_com.crt:
+    file.managed:
+        - source: salt://ssl/star_veldthollow_com.crt
+        - require:
+            - pkg: nginx
+
+/etc/nginx/ssl/star_veldthollow_com.key:
+    file.managed:
+        - source: salt://ssl/star_veldthollow_com.key
+        - require:
+            - pkg: nginx
+
 # vim:set ft=yaml:
