@@ -4,8 +4,9 @@ include:
 supervisor:
     pkg:
         - installed
-    pip.installed:
-        - name: gunicorn
+    cmd.run:
+        - name: pip3 install gunicorn
+        - unless: gunicorn
         - require:
             - pkg: python
     service:

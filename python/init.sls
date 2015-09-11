@@ -1,10 +1,11 @@
 python:
     pkg.installed:
         - names:
-            - python
+            - python3
+            - python3-pip
+            - python3-dev
+            - python3-setuptools
             - python-pip
-            - python-dev
-            - python-setuptools
 
 pillow_dependencies:
     pkg.installed:

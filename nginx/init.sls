@@ -1,6 +1,6 @@
 nginx:
     pkgrepo.managed:
-        - ppa: nginx/stable 
+        - ppa: nginx/stable
         - required_in:
             - pkg: nginx
     pkg.installed:
@@ -14,7 +14,7 @@ nginx:
             - file: /etc/nginx/sites-available/default
             - file: /etc/nginx/sites-available/static
             - file: /etc/nginx/sites-available/redirect
-     
+
 /etc/nginx/nginx.conf:
     file.managed:
         - source: salt://nginx/nginx.conf
@@ -55,6 +55,11 @@ nginx:
         - user: www-data
         - group: www-data
         - mode: 700
+        - file_mode: 600
+        - recurse:
+            - user
+            - group
+            - mode
 
 /etc/nginx/ssl/star_veldthollow_com.crt:
     file.managed:

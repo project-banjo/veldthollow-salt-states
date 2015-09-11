@@ -10,8 +10,8 @@ server {
     listen 8443 ssl;
 
     server_name veldthollow.com;
-    ssl_certificate /etc/nginx/ssl/star_velthollow_com.crt;
-    ssl_certificate_key /etc/nginx/ssl/star_velthollow_com.key;
+    ssl_certificate /etc/nginx/ssl/star_veldthollow_com.crt;
+    ssl_certificate_key /etc/nginx/ssl/star_veldthollow_com.key;
     add_header Alt-Svc 'h2=":8443"; ma=60;';
 
     client_max_body_size 4G;

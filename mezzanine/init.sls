@@ -17,22 +17,23 @@ mezzanine:
     postgres_database.present:
         - name: {{pillar.postgres.blog_db}}
         - owner: {{pillar.postgres.blog_owner}}
-        - runas: postgres
         - require:
             - postgres_user: pg_user-{{pillar.postgres.blog_owner}}
 
 pip_requirements:
     cmd.wait:
-        - name: pip install -r requirements.txt
+        - name: pip3 install -r requirements.txt
         - cwd: /var/www/veldthollow-mezzanine/
         - watch:
             - git: mezzanine
         - require:
+            - pkg: python
             - pkg: pillow_dependencies
+            - git: mezzanine
 
 db_migrations:
     cmd.wait:
-        - name: python manage.py migrate --noinput
+        - name: python3 manage.py migrate --noinput
         - cwd: /var/www/veldthollow-mezzanine/
         - runas: www-data
         - watch:
@@ -43,11 +44,13 @@ db_migrations:
 
 collect_static:
     cmd.wait:
-        - name: python manage.py collectstatic --noinput
+        - name: python3 manage.py collectstatic --noinput
         - cwd: /var/www/veldthollow-mezzanine/
         - runas: www-data
         - watch:
             - git: mezzanine
+        - require:
+            - cmd: pip_requirements
 
 mezzanine_supervisor:
     file.managed:
@@ -56,7 +59,7 @@ mezzanine_supervisor:
         - mode: 644
         - require:
             - pkg: supervisor
-            - pip: supervisor
+            - cmd: supervisor
     supervisord.running:
         - name: gunicorn
         - update: True
@@ -74,7 +77,6 @@ pg_user-{{username}}:
         - password: {{user.password}}
         - encrypted: True
         - superuser: {{user.get('superuser', False)}}
-        - runas: postgres
         - require:
             - pkg: postgresql
 {% endfor %}
