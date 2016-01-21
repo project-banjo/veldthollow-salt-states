@@ -11,9 +11,9 @@ nginx:
         - watch:
             - file: /etc/nginx/nginx.conf
             - file: /etc/nginx/mime.types
-            - file: /etc/nginx/sites-available/default
-            - file: /etc/nginx/sites-available/static
-            - file: /etc/nginx/sites-available/redirect
+            - file: /etc/nginx/sites-enabled/default
+            - file: /etc/nginx/sites-enabled/static
+            - file: /etc/nginx/sites-enabled/redirect
 
 /etc/nginx/nginx.conf:
     file.managed:
@@ -29,21 +29,21 @@ nginx:
         - require:
             - pkg: nginx
 
-/etc/nginx/sites-available/default:
+/etc/nginx/sites-enabled/default:
     file.managed:
         - source: salt://nginx/sites/default
         - template: jinja
         - require:
             - pkg: nginx
 
-/etc/nginx/sites-available/static:
+/etc/nginx/sites-enabled/static:
     file.managed:
         - source: salt://nginx/sites/static
         - template: jinja
         - require:
             - pkg: nginx
 
-/etc/nginx/sites-available/redirect:
+/etc/nginx/sites-enabled/redirect:
     file.managed:
         - source: salt://nginx/sites/redirect
         - template: jinja
