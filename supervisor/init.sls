@@ -6,7 +6,7 @@ supervisor:
         - installed
     cmd.run:
         - name: pip3 install gunicorn
-        - unless: gunicorn
+        - unless: which gunicorn
         - require:
             - pkg: python
     service:

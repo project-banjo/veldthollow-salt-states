@@ -61,15 +61,15 @@ nginx:
             - group
             - mode
 
-/etc/nginx/ssl/star_veldthollow_com.crt:
+/etc/nginx/ssl/veldthollow_com.crt:
     file.managed:
-        - source: salt://ssl/star_veldthollow_com.crt
+        - source: salt://ssl/veldthollow_com.crt
         - require:
             - pkg: nginx
 
-/etc/nginx/ssl/star_veldthollow_com.key:
+/etc/nginx/ssl/veldthollow_com.key:
     file.managed:
-        - source: salt://ssl/star_veldthollow_com.key
+        - source: salt://ssl/veldthollow_com.key
         - require:
             - pkg: nginx
 
