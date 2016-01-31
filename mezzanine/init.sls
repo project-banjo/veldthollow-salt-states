@@ -8,7 +8,7 @@ mezzanine:
         - name: https://github.com/project-banjo/veldthollow-mezzanine.git
         - target: /var/www/veldthollow-mezzanine/
     file.managed:
-        - name: /var/www/veldthollow-mezzanine/local_settings.py
+        - name: /var/www/veldthollow-mezzanine/veldthollow/settings/local.py
         - source: salt://mezzanine/local_settings.py
         - mode: 0644
         - template: jinja

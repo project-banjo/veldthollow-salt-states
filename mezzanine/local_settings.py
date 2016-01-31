@@ -1,4 +1,10 @@
+from .base import *  # noqa
+
 DEBUG = False
+for t in TEMPLATES:
+    t.setdefault('OPTIONS', {})
+    t['OPTIONS']['debug'] = DEBUG
+
 ALLOWED_HOSTS = ['{{pillar.django.allowed_host}}']
 
 SECRET_KEY = '{{pillar.django.secret_key}}'
