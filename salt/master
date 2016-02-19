@@ -1,0 +1,5 @@
+state_verbose: False
+file_roots:
+    base:
+        - /srv/salt
+        - /srv/pillar/files

@@ -1,13 +1,28 @@
 base:
     "*":
         - base
-        - salt
+        - hosts
+    "roles:salt-master":
+        - match: grains
+        - salt.master
+    "roles:salt-minion":
+        - match: grains
+        - salt.minion
+    "roles:salt-masterless-minion":
+        - match: grains
+        - salt.masterless-minion
+    "roles:web":
+        - match: grains
         - nginx
-        - postgresql
-        - supervisor
-        - redis
-        - python
+    "roles:veldthollow-web"
+        - match: grains
         - mezzanine
-        - postgresql.backups
+    "roles:redis"
+        - match: grains
+        - redis
+    "roles:postgres"
+        - match: grains
+        - postgresql
+        #- postgresql.backups
 
 # vim:set ft=yaml:

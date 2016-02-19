@@ -1,3 +1,5 @@
+{% set django = pillar.get('django', {}) -%}
+{% set db_engine = pillar[django.db_engine] -%}
 from .base import *  # noqa
 
 DEBUG = False
@@ -5,18 +7,17 @@ for t in TEMPLATES:
     t.setdefault('OPTIONS', {})
     t['OPTIONS']['debug'] = DEBUG
 
-ALLOWED_HOSTS = ['{{pillar.django.allowed_host}}']
+ALLOWED_HOSTS = ['{{django.allowed_host}}']
 
-SECRET_KEY = '{{pillar.django.secret_key}}'
-NEVERCACHE_KEY = '{{pillar.django.nevercache_key}}'
+SECRET_KEY = '{{django.secret_key}}'
+NEVERCACHE_KEY = '{{django.nevercache_key}}'
 
-STATIC_URL = '{{pillar.django.static_url}}'
-MEDIA_URL = '{{pillar.django.media_url}}'
+STATIC_URL = '{{django.get("static_url", "/static/")}}'
+MEDIA_URL = '{{django.get("media_url", "/media/")}}'
 
-{% set db_engine = pillar[pillar.django.db_engine] -%}
 DATABASES = {
     'default': {
-        'ENGINE': '{{pillar.django.db_engine_module}}',
+        'ENGINE': '{{django.db_engine_module}}',
         'NAME': '{{db_engine.blog_db}}',
         'USER': '{{db_engine.blog_owner}}',
         'PASSWORD': '{{db_engine.users[db_engine.blog_owner].password}}',

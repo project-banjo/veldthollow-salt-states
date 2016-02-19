@@ -1,0 +1,49 @@
+#!/bin/bash
+pushd `dirname $0` > /dev/null
+SCRIPT_PATH=`pwd -P`
+popd > /dev/null
+
+minion_id=$1
+roster_file=/srv/pillar/salt-ssh/roster
+
+if [ ! $minion_id ]; then
+    echo -e "\e[31mYou MUST provide the ID of a machine configured in the roster file, $roster_file.\e[m"
+    exit 1
+fi
+
+salt_ssh (){
+    salt-ssh --roster-file=$roster_file -i $minion_id $@
+}
+
+cmd_status_check(){ # TODO rename this
+    check_cmd=$1
+    check_value=$2
+    exec_cmd=$3
+    for i in $(seq 1 25)
+    do
+        status_check=`$check_cmd | grep $check_value`
+        if [ "$status_check" ]; then
+            $exec_cmd
+            break
+        fi
+        sleep 1
+    done
+}
+
+salt_ssh state.sls salt.minion
+salt_ssh state.sls hosts
+cmd_status_check "salt-key -l un" $minion_id "salt-key -y -a $minion_id"
+cmd_status_check "salt $minion_id test.ping" "True" "salt $minion_id state.sls salt"  # make grains persistent
+
+if [ ! `salt-key -l acc | grep $minion_id` ]
+then
+    echo "Unable to accept minion key for $minion_id"
+    exit 1
+fi
+
+echo
+echo -e "\e[32mSalt Minion is now setup. You can now run the highstate to complete "
+echo -e "configuration of this machine:\e[m"
+echo -e "\e[33msalt '$minion_id' state.highstate\e[m"
+echo
+

@@ -1,6 +1,4 @@
-file_client: local
-file_roots:
-  base:
-    - /srv/salt/
-    - /srv/pillar/files/
+master: {{master_host}}
+id: {{id}}
+file_client: remote
 state_verbose: False
