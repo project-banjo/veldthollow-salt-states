@@ -35,7 +35,7 @@ if [ ! `grep $master_host /etc/hosts` ]; then
     echo "$master_ip    $master_host" >> /etc/hosts
 fi
 
-wget -O - http://bootstrap.saltstack.org --no-check-certificate | sudo sh -s -- -M git $SALT_VERSION
+wget -O - http://bootstrap.saltstack.org --no-check-certificate | sudo sh -s -- -P -M git $SALT_VERSION
 
 cp $SCRIPT_PATH/salt/master /etc/salt/master
 sed "s/{{master_host}}/$master_host/g; s/{{id}}/$master_host/g" < $SCRIPT_PATH/salt/minion > /etc/salt/minion

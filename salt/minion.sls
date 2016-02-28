@@ -12,22 +12,24 @@ install_salt:
     cmd.script:
         - source: http://bootstrap.saltstack.org
         - unless: which salt
-        - args: "git v{{saltmaster_version}}"
+        - args: "-P git v{{saltmaster_version}}"
 
 upgrade_salt:
     cmd.script:
         - source: http://bootstrap.saltstack.org
         - onlyif: which salt
         - unless: {{grains['saltversion'] == saltmaster_version}}
-        - args: "git v{{saltmaster_version}}"
+        - args: "-P git v{{saltmaster_version}}"
 
 /etc/salt/minion:
     file.managed:
         - source: salt://salt/minion
         - template: jinja
         - defaults:
-            master_host: {{pillar['salt']['master']}}
+            master_host: {{pillar.get('salt:master', 'saltmaster')}}
             id: {{ grains['id'] }}
+        - require:
+            - cmd: install_salt
 
 salt-minion:
     service.running:

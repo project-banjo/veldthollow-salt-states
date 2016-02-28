@@ -5,7 +5,7 @@ install_salt_master:
     cmd.script:
         - source: http://bootstrap.saltstack.org
         - unless: which salt
-        - args: "-M git v{{grains['saltversion']}}"
+        - args: "-P -M git v{{grains['saltversion']}}"
 
 /etc/salt/master:
     file.managed:

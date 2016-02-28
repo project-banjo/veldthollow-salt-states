@@ -8,6 +8,10 @@ nginx:
             - pkgrepo: nginx
     service:
         - running
+        - require:
+            - file: /etc/nginx/ssl
+            - file: /etc/nginx/ssl/veldthollow_com.crt
+            - file: /etc/nginx/ssl/veldthollow_com.key
         - watch:
             - file: /etc/nginx/nginx.conf
             - file: /etc/nginx/mime.types
@@ -60,6 +64,8 @@ nginx:
             - user
             - group
             - mode
+        - require:
+            - pkg: nginx
 
 /etc/nginx/ssl/veldthollow_com.crt:
     file.managed:
