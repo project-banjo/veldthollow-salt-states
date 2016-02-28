@@ -6,9 +6,9 @@ include:
 mezzanine:
     git.latest:
         - name: https://github.com/project-banjo/veldthollow-mezzanine.git
-        - target: /var/www/veldthollow-mezzanine/
+        - target: /srv/veldthollow-mezzanine/
     file.managed:
-        - name: /var/www/veldthollow-mezzanine/veldthollow/settings/local.py
+        - name: /srv/veldthollow-mezzanine/veldthollow/settings/local.py
         - source: salt://mezzanine/local_settings.py
         - mode: 0644
         - template: jinja
@@ -23,7 +23,7 @@ mezzanine:
 pip_requirements:
     cmd.wait:
         - name: pip3 install -r requirements.txt
-        - cwd: /var/www/veldthollow-mezzanine/
+        - cwd: /srv/veldthollow-mezzanine/
         - watch:
             - git: mezzanine
         - require:
@@ -34,7 +34,7 @@ pip_requirements:
 db_migrations:
     cmd.wait:
         - name: python3 manage.py migrate --noinput
-        - cwd: /var/www/veldthollow-mezzanine/
+        - cwd: /srv/veldthollow-mezzanine/
         - runas: www-data
         - watch:
             - git: mezzanine
@@ -45,7 +45,7 @@ db_migrations:
 collect_static:
     cmd.wait:
         - name: python3 manage.py collectstatic --noinput
-        - cwd: /var/www/veldthollow-mezzanine/
+        - cwd: /srv/veldthollow-mezzanine/
         - runas: www-data
         - watch:
             - git: mezzanine
@@ -56,6 +56,7 @@ mezzanine_supervisor:
     file.managed:
         - name: /etc/supervisor/conf.d/mezzanine.conf
         - source: salt://mezzanine/supervisor.conf
+        - template: jinja
         - mode: 644
         - require:
             - pkg: supervisor
