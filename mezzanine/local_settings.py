@@ -12,8 +12,13 @@ ALLOWED_HOSTS = ['{{django.allowed_host}}']
 SECRET_KEY = '{{django.secret_key}}'
 NEVERCACHE_KEY = '{{django.nevercache_key}}'
 
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
+STATICFILES_STORAGE = 'storages.backends.s3boto.S3BotoStorage'
 STATIC_URL = '{{django.get("static_url", "/static/")}}'
 MEDIA_URL = '{{django.get("media_url", "/media/")}}'
+{% if django.get('aws_bucket') %}AWS_ACCESS_KEY_ID = '{{django["aws_key_id"]}}'{% endif %}
+{% if django.get('aws_bucket') %}AWS_SECRET_ACCESS_KEY = '{{django["aws_secret_key"]}}'{% endif %}
+{% if django.get('aws_bucket') %}AWS_STORAGE_BUCKET_NAME = '{{django["aws_bucket"]}}'{% endif %}
 
 DATABASES = {
     'default': {
